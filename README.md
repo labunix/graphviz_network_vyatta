@@ -17,3 +17,9 @@ $ dot -T pdf vmvyatta.txt > vmvyatta.pdf
 # PDF Application
 # Edit LibreOffice3.5
 # Read Only AdobeReader
+
+# txt to png
+$ dot -T png simple.txt -o simple.png
+$ dot -T png vyatta.txt -o vyatta.png
+$ dot -T png vmvyatta.txt -o vmvyatta.png
+
