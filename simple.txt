@@ -1,0 +1,61 @@
+digraph "Network Object" {
+	rankdir=TB;
+	graph		[ranksep=0.5, fontsize=14];
+	node		[shape=rect, sizefixed=true,
+			 width="2.7506", height="1.7"];
+#	//Network Object//
+	Internet	[label="Internet\n22.33.44.55"];
+	FireWall	[label="FireWall\n10.0.0.0/24"];
+	DMZ		[label="DMZ\n10.0.0.0/24"];
+	Intranet	[label="Intranet\n192.168.0.0/24"];
+	Localnet	[label="Localnet\n172.16.0.0/16"];
+	Internet -> FireWall -> DMZ -> Intranet -> Localnet [dir=none];
+#	//Server Object//
+	Router		[label="Internet Router"];
+	LB_FW1		[label="Load Barancer1\nFireWall"];
+	LB_FW2		[label="Load Barancer2\nFireWall"];
+	OutPri		[label="OutPriDNS\nOutWeb1\nOutMail1"];
+	Out2nd		[label="Out2ndDNS\nOutWeb2\nOutMail2"];
+	In_FWR		[label="InFireWallRouter\nProxy\nProxyFilter"];
+	In_Pri		[label="InPriDNS\nInWeb1\nInmail1"];
+	In_2nd		[label="In2ndDNS\nInWeb2\nInmail2"];
+	Client		[label="Client"];
+#	//Mapping Server Object
+	Router -> LB_FW1;
+	Router -> LB_FW2;
+	LB_FW1 -> OutPri;
+	LB_FW1 -> Out2nd;
+	LB_FW2 -> OutPri;
+	LB_FW2 -> Out2nd;
+	OutPri -> In_FWR;
+	Out2nd -> In_FWR;
+	In_FWR -> In_Pri;
+	In_FWR -> In_2nd;
+	In_Pri -> Client;
+	In_2nd -> Client;
+#	//Merge Network and Server Object//
+	{rank=same;
+		Internet;
+		Router;
+	}
+	{rank=same;
+		FireWall;
+		LB_FW1;
+		LB_FW2;
+	}
+	{rank=same;
+		DMZ;
+		OutPri;
+		Out2nd;
+	}
+	{rank=same;
+		Intranet;
+		In_FWR;
+		In_Pri;
+		In_2nd;
+	}
+	{rank=same;
+		Localnet;
+		Client;
+	}
+}

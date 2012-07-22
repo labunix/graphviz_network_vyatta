@@ -1,0 +1,44 @@
+digraph "Network Object" {
+	rankdir=TB;
+	graph		[ranksep=0.5, fontsize=14];
+	node		[shape=rect, fixedsize=true,
+			 width="2.7506", height="1.7"];
+#	//Network Object//
+	Internet	[label="Internet\n192.168.72.213/32",
+			 ranksep=0, width="5,1.7"];
+	FireWall	[label="FireWall\n10.10.0.213/24",
+			 ranksep=0, width="5,1.7"];
+	DMZ		[label="DMZ\n10.10.10.213/24",
+			 ranksep=0, width="5,1.7"];
+	Intranet	[label="Intranet\n192.168.10.213/24",width="5,1.7"];
+	Localnet	[label="Localnet\n172.16.10.213/16", width="5,1.7"];
+	Internet -> FireWall -> DMZ -> Intranet -> Localnet [dir=none];
+#	//Server Object//
+	LB_FW1		[label="Vyatta1"];
+	LB_FW2		[label="Vyatta2"];
+	In_Pri		[label="Vyatta3"];
+	In_2nd		[label="Vyatta4"];
+	Client		[label="Client"];
+#	//Mapping Server Object
+	LB_FW1 -> In_Pri;
+	LB_FW1 -> In_2nd;
+	LB_FW2 -> In_Pri;
+	LB_FW2 -> In_2nd;
+	In_Pri -> Client;
+	In_2nd -> Client;
+#	//Merge Network and Server Object//
+	{rank=same;
+		FireWall;
+		LB_FW1;
+		LB_FW2;
+	}
+	{rank=same;
+		Intranet;
+		In_Pri;
+		In_2nd;
+	}
+	{rank=same;
+		Localnet;
+		Client;
+	}
+}
